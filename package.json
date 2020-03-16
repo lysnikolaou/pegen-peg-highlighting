@@ -3,6 +3,11 @@
     "displayName": "Pegen PEG Grammar Highlighting",
     "description": "Syntax highlighting for the PEG syntax that the pegen project uses",
     "version": "0.1.0",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/lysnikolaou/pegen-peg-highlighting"
+    },
+    "license": "MIT",
     "engines": {
         "vscode": "^1.43.0"
     },
