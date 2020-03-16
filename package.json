@@ -8,6 +8,7 @@
         "url": "https://github.com/lysnikolaou/pegen-peg-highlighting"
     },
     "license": "MIT",
+    "publisher": "lysnikolaou",
     "engines": {
         "vscode": "^1.43.0"
     },
