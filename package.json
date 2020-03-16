@@ -2,7 +2,7 @@
     "name": "pegen-peg",
     "displayName": "Pegen PEG Grammar Highlighting",
     "description": "Syntax highlighting for the PEG syntax that the pegen project uses",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "engines": {
         "vscode": "^1.43.0"
     },
