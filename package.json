@@ -1,0 +1,25 @@
+{
+    "name": "pegen-peg",
+    "displayName": "Pegen PEG Grammar Highlighting",
+    "description": "Syntax highlighting for the PEG syntax that the pegen project uses",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.43.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "pegen",
+            "aliases": ["Pegen PEG", "pegen"],
+            "extensions": [".gram"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "pegen",
+            "scopeName": "source.gram",
+            "path": "./syntaxes/pegen.tmLanguage.json"
+        }]
+    }
+}
