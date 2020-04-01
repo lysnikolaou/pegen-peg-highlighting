@@ -52,12 +52,15 @@
 			"patterns": [
 				{
 					"name": "meta.type.pegen",
-					"match": "^\\s*(\\w+)\\[?(\\w+\\*?)?\\]?:",
+					"match": "^\\s*(\\w+)\\[?(\\w+\\*?)?\\]?\\s*\\(?(\\w+)?\\)?\\s*:",
 					"captures": {
 						"1": {
 							"name": "entity.name.class.pegen"
 						},
 						"2": {
+							"name": "constant.language.pegen"
+						},
+						"3": {
 							"name": "constant.language.pegen"
 						}
 					}
