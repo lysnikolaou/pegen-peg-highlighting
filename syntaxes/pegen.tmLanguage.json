@@ -3,67 +3,343 @@
 	"name": "Pegen PEG",
 	"patterns": [
 		{
-			"include": "#rules"
+			"include": "#comment"
 		},
 		{
-			"include": "#syntax"
+			"include": "#meta"
 		},
 		{
-			"name": "comment.line.pegen",
-			"match": "#.*$"
+			"include": "#rule-definition"
+		},
+		{
+			"include": "#expression"
 		}
 	],
 	"repository": {
-		"syntax": {
+		"comment": {
+			"name": "comment.line.number-sign.pegen",
+			"match": "#.*$"
+		},
+		"meta": {
+			"name": "meta.directive.pegen",
+			"begin": "^(@)([A-Za-z_]\\w*)",
+			"beginCaptures": {
+				"1": {
+					"name": "punctuation.definition.directive.pegen"
+				},
+				"2": {
+					"name": "keyword.other.directive.pegen"
+				}
+			},
+			"end": "$",
 			"patterns": [
 				{
+					"include": "#comment"
+				},
+				{
+					"include": "#triple-string"
+				},
+				{
+					"include": "#strings"
+				},
+				{
+					"name": "variable.other.directive-value.pegen",
+					"match": "[A-Za-z_]\\w*"
+				}
+			]
+		},
+		"rule-definition": {
+			"name": "meta.rule.definition.pegen",
+			"begin": "^([A-Za-z_]\\w*)(?=\\s*[\\[(:])",
+			"beginCaptures": {
+				"1": {
+					"name": "entity.name.class.pegen"
+				}
+			},
+			"end": "(:)|$",
+			"endCaptures": {
+				"1": {
+					"name": "punctuation.separator.rule.pegen"
+				}
+			},
+			"patterns": [
+				{
+					"include": "#type-annotation"
+				},
+				{
+					"name": "meta.rule.flags.pegen",
+					"begin": "\\(",
+					"end": "\\)",
+					"beginCaptures": {
+						"0": {
+							"name": "punctuation.definition.flags.begin.pegen"
+						}
+					},
+					"endCaptures": {
+						"0": {
+							"name": "punctuation.definition.flags.end.pegen"
+						}
+					},
+					"patterns": [
+						{
+							"name": "storage.modifier.flag.pegen",
+							"match": "[A-Za-z_]\\w*"
+						},
+						{
+							"name": "punctuation.separator.comma.pegen",
+							"match": ","
+						}
+					]
+				}
+			]
+		},
+		"type-annotation": {
+			"name": "meta.annotation.type.pegen",
+			"begin": "\\[",
+			"end": "\\]",
+			"beginCaptures": {
+				"0": {
+					"name": "punctuation.definition.annotation.begin.pegen"
+				}
+			},
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.definition.annotation.end.pegen"
+				}
+			},
+			"patterns": [
+				{
+					"include": "#type-annotation-content"
+				}
+			]
+		},
+		"type-annotation-content": {
+			"patterns": [
+				{
+					"begin": "\\[",
+					"end": "\\]",
+					"patterns": [
+						{
+							"include": "#type-annotation-content"
+						}
+					]
+				},
+				{
+					"include": "#strings"
+				},
+				{
+					"name": "storage.modifier.pointer.pegen",
+					"match": "\\*"
+				},
+				{
+					"name": "storage.type.pegen",
+					"match": "[A-Za-z_]\\w*"
+				}
+			]
+		},
+		"expression": {
+			"patterns": [
+				{
+					"include": "#comment"
+				},
+				{
+					"include": "#action"
+				},
+				{
+					"include": "#strings"
+				},
+				{
+					"include": "#named-item"
+				},
+				{
+					"include": "#operators"
+				},
+				{
+					"include": "#token"
+				},
+				{
 					"name": "constant.language.pegen",
-					"match": "\\b(True|False)\\b"
+					"match": "\\b(True|False|None)\\b"
 				},
 				{
-					"name": "keyword.operator.pegen",
-					"match": "\\||&|!"
+					"name": "entity.name.function.pegen",
+					"match": "[A-Za-z_]\\w*"
+				}
+			]
+		},
+		"named-item": {
+			"match": "\\b([A-Za-z_]\\w*)\\s*(?:(\\[)([^\\]=]*)(\\]))?\\s*(=)",
+			"captures": {
+				"1": {
+					"name": "entity.name.tag.pegen"
+				},
+				"2": {
+					"name": "punctuation.definition.annotation.begin.pegen"
+				},
+				"3": {
+					"patterns": [
+						{
+							"include": "#type-annotation-content"
+						}
+					]
+				},
+				"4": {
+					"name": "punctuation.definition.annotation.end.pegen"
+				},
+				"5": {
+					"name": "keyword.operator.assignment.pegen"
+				}
+			}
+		},
+		"operators": {
+			"patterns": [
+				{
+					"name": "keyword.operator.forced.pegen",
+					"match": "&&"
 				},
 				{
-					"name": "meta.action.pegen",
-					"begin": "{",
-					"end": "}"
+					"name": "keyword.operator.lookahead.pegen",
+					"match": "&|!"
+				},
+				{
+					"name": "keyword.control.cut.pegen",
+					"match": "~"
+				},
+				{
+					"name": "keyword.operator.alternative.pegen",
+					"match": "\\|"
+				},
+				{
+					"name": "keyword.operator.quantifier.pegen",
+					"match": "[?*+]"
+				},
+				{
+					"name": "keyword.operator.gather.pegen",
+					"match": "\\."
+				},
+				{
+					"name": "keyword.operator.endmarker.pegen",
+					"match": "\\$"
+				},
+				{
+					"name": "punctuation.parenthesis.pegen",
+					"match": "[()]"
+				},
+				{
+					"name": "punctuation.brackets.optional.pegen",
+					"match": "[\\[\\]]"
+				}
+			]
+		},
+		"token": {
+			"name": "constant.other.token.pegen",
+			"match": "\\b[A-Z][A-Z0-9_]*\\b"
+		},
+		"strings": {
+			"patterns": [
+				{
+					"include": "#triple-string"
 				},
 				{
 					"name": "string.quoted.single.pegen",
 					"begin": "'",
-					"end": "'"
+					"end": "'|$",
+					"patterns": [
+						{
+							"include": "#string-escape"
+						}
+					]
 				},
 				{
-					"name": "string.quoted.single.pegen",
-					"match": "[A-Z][A_Z_]*"
-				},
-				{
-					"name": "entity.name.tag.pegen",
-					"match": "\\w+="
-				},
-				{
-					"name": "entity.name.function.pegen",
-					"match": "\\w+"
+					"name": "string.quoted.double.pegen",
+					"begin": "\"",
+					"end": "\"|$",
+					"patterns": [
+						{
+							"include": "#string-escape"
+						}
+					]
 				}
 			]
 		},
-		"rules": {
+		"triple-string": {
 			"patterns": [
 				{
-					"name": "meta.type.pegen",
-					"match": "^\\s*(\\w+)\\[?(\\w+\\*?)?\\]?\\s*\\(?(\\w+)?\\)?\\s*:",
-					"captures": {
-						"1": {
-							"name": "entity.name.class.pegen"
-						},
-						"2": {
-							"name": "constant.language.pegen"
-						},
-						"3": {
-							"name": "constant.language.pegen"
+					"name": "string.quoted.triple.pegen",
+					"begin": "'''",
+					"end": "'''",
+					"patterns": [
+						{
+							"include": "#string-escape"
 						}
-					}
+					]
+				},
+				{
+					"name": "string.quoted.triple.pegen",
+					"begin": "\"\"\"",
+					"end": "\"\"\"",
+					"patterns": [
+						{
+							"include": "#string-escape"
+						}
+					]
+				}
+			]
+		},
+		"string-escape": {
+			"name": "constant.character.escape.pegen",
+			"match": "\\\\."
+		},
+		"action": {
+			"name": "meta.action.pegen",
+			"begin": "\\{",
+			"end": "\\}",
+			"beginCaptures": {
+				"0": {
+					"name": "punctuation.section.action.begin.pegen"
+				}
+			},
+			"endCaptures": {
+				"0": {
+					"name": "punctuation.section.action.end.pegen"
+				}
+			},
+			"patterns": [
+				{
+					"include": "#action-content"
+				}
+			]
+		},
+		"action-content": {
+			"patterns": [
+				{
+					"begin": "\\{",
+					"end": "\\}",
+					"patterns": [
+						{
+							"include": "#action-content"
+						}
+					]
+				},
+				{
+					"include": "#strings"
+				},
+				{
+					"name": "comment.line.double-slash.pegen",
+					"match": "//.*$"
+				},
+				{
+					"name": "comment.block.pegen",
+					"begin": "/\\*",
+					"end": "\\*/"
+				},
+				{
+					"name": "constant.language.pegen",
+					"match": "\\b(True|False|None|NULL)\\b"
+				},
+				{
+					"name": "constant.numeric.pegen",
+					"match": "\\b\\d+\\b"
 				}
 			]
 		}

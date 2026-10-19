@@ -4,6 +4,17 @@ All notable changes to the "pegen-peg" extension will be documented in this file
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.3.0]
+
+- Support the full grammar syntax used by CPython's `Grammar/python.gram`:
+  - Meta directives (`@trailer`, `@include`, `@subheader`, ...) and triple-quoted strings
+  - Double-quoted strings (soft keywords)
+  - Nested and pointer return types (`[asdl_stmt_seq*]`, `[frozenset[str]]`) and multiple flags
+  - Typed named items (`a[asdl_expr_seq*]=...`)
+  - Forced tokens (`&&`), cut (`~`), gather (`s.e+`), quantifiers, `$` and grouping punctuation
+  - Actions with nested braces and strings containing braces
+- Fix token names (e.g. `NAME`, `NEWLINE`) only being partially highlighted
+
 ## [0.2.0]
 
 - Add support for flags in rule definitions
