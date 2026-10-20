@@ -4,6 +4,11 @@ All notable changes to the "pegen-peg" extension will be documented in this file
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [Unreleased]
+
+- Cmd/Ctrl+Click on the path in an `@include` directive opens the included file
+- Require VS Code 1.74 or newer
+
 ## [0.3.0]
 
 - Support the full grammar syntax used by CPython's `Grammar/python.gram`:

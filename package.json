@@ -10,7 +10,13 @@
     "license": "MIT",
     "publisher": "lysnikolaou",
     "engines": {
-        "vscode": "^1.43.0"
+        "vscode": "^1.74.0"
+    },
+    "main": "./out/extension.js",
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p .",
+        "watch": "tsc -watch -p ."
     },
     "categories": [
         "Programming Languages"
@@ -27,5 +33,10 @@
             "scopeName": "source.gram",
             "path": "./syntaxes/pegen.tmLanguage.json"
         }]
+    },
+    "devDependencies": {
+        "@types/node": "^16.18.126",
+        "@types/vscode": "~1.74.0",
+        "typescript": "^7.0.2"
     }
 }
