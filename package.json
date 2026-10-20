@@ -16,7 +16,8 @@
     "scripts": {
         "vscode:prepublish": "npm run compile",
         "compile": "tsc -p .",
-        "watch": "tsc -watch -p ."
+        "watch": "tsc -watch -p .",
+        "package": "vsce package"
     },
     "categories": [
         "Programming Languages"
@@ -37,6 +38,7 @@
     "devDependencies": {
         "@types/node": "^16.18.126",
         "@types/vscode": "~1.74.0",
+        "@vscode/vsce": "^4.0.0",
         "typescript": "^7.0.2"
     }
 }

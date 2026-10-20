@@ -46,6 +46,20 @@ To see which scope a token gets, run **Developer: Inspect Editor Tokens and Scop
 from the Command Palette. After you change the grammar, run **Developer: Reload Window**
 in the development host.
 
+## Releasing
+
+Pushing a `v*` tag publishes the extension to the VS Code Marketplace and creates a
+GitHub release with the `.vsix` attached. The tag has to match the version in
+`package.json`.
+
+1. Bump `version` in `package.json` and add a section to `CHANGELOG.md`.
+2. Commit, then tag and push:
+
+   ```sh
+   git tag v0.4.0
+   git push origin main v0.4.0
+   ```
+
 ## Known Issues
 
 Code inside actions isn't highlighted as C or Python. Only strings, comments, numbers
