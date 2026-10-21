@@ -15,6 +15,9 @@ CPython's parser. It covers the full syntax used in CPython's
   triple-quoted blocks
 - **Clickable `@include` paths**: Cmd/Ctrl+Click opens the included file, resolved
   relative to the current `.gram` file
+- **Go to Definition and Find All References** for rules: Cmd/Ctrl+Click a rule to jump
+  to its definition, or <kbd>Shift</kbd>+<kbd>F12</kbd> to list every use. Rules defined in
+  `@include`d files are found too
 - **Keywords and soft keywords**: `'if'` and `"match"` are highlighted differently
 - **Tokens** such as `NAME`, `NEWLINE` and `ENDMARKER`
 - **Named items**, including typed ones (`a=expression`, `a[asdl_expr_seq*]=','.NAME+`)
