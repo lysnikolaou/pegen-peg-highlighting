@@ -30,6 +30,10 @@ jobs:
           fi
           echo "VSIX=pegen-peg-$version.vsix" >> "$GITHUB_ENV"
 
+      - run: xvfb-run -a npm test
+
+      - run: npm run test:grammar
+
       - run: npx vsce package --out "$VSIX"
 
       - name: Publish to the VS Code Marketplace

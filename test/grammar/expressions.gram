@@ -1,0 +1,40 @@
+# SYNTAX TEST "source.gram" "alternatives, items and operators"
+
+rule:
+    | a=expression b[asdl_expr_seq*]=','.NAME+ 'if' "match"
+#     ^ entity.name.tag.pegen
+#      ^ keyword.operator.assignment.pegen
+#       ^^^^^^^^^^ entity.name.function.pegen
+#                  ^ entity.name.tag.pegen
+#                   ^ punctuation.definition.annotation.begin.pegen
+#                    ^^^^^^^^^^^^^ storage.type.pegen
+#                                 ^ storage.modifier.pointer.pegen
+#                                  ^ punctuation.definition.annotation.end.pegen
+#                                   ^ keyword.operator.assignment.pegen
+#                                    ^^^ string.quoted.single.pegen
+#                                       ^ keyword.operator.gather.pegen
+#                                        ^^^^ constant.other.token.pegen
+#                                            ^ keyword.operator.quantifier.pegen
+#                                              ^^^^ string.quoted.single.pegen
+#                                                   ^^^^^^^ string.quoted.double.pegen
+    | &x !y &&'(' ~ z? w* (t | s) [q] $
+#^^^ - keyword
+#   ^ keyword.operator.alternative.pegen
+#     ^ keyword.operator.lookahead.pegen
+#        ^ keyword.operator.lookahead.pegen
+#           ^^ keyword.operator.forced.pegen
+#                 ^ keyword.control.cut.pegen
+#                    ^ keyword.operator.quantifier.pegen
+#                       ^ keyword.operator.quantifier.pegen
+#                         ^ punctuation.parenthesis.pegen
+#                            ^ keyword.operator.alternative.pegen
+#                               ^ punctuation.parenthesis.pegen
+#                                 ^ punctuation.brackets.optional.pegen
+#                                   ^ punctuation.brackets.optional.pegen
+#                                     ^ keyword.operator.endmarker.pegen
+    | 'it\'s' True None # trailing comment
+#     ^^^^^^^ string.quoted.single.pegen
+#        ^^ constant.character.escape.pegen
+#             ^^^^ constant.language.pegen
+#                  ^^^^ constant.language.pegen
+#                       ^^^^^^^^^^^^^^^^^^ comment.line.number-sign.pegen

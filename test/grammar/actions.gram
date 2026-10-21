@@ -1,0 +1,18 @@
+# SYNTAX TEST "source.gram" "actions"
+
+rule: a=x { _PyAST_Call(a, "}", '{', NULL, 0, EXTRA) }
+#         ^ punctuation.section.action.begin.pegen
+#           ^^^^^^^^^^^ meta.action.pegen
+#                          ^^^ string.quoted.double.pegen
+#                               ^^^ string.quoted.single.pegen
+#                                    ^^^^ constant.language.pegen
+#                                          ^ constant.numeric.pegen
+#                                                    ^ punctuation.section.action.end.pegen
+rule2: x {
+    if (a) { b; } /* } */ // }
+#   ^^^^^^^^^^^^^ meta.action.pegen
+#                 ^^^^^^^ comment.block.pegen
+#                         ^^^^ comment.line.double-slash.pegen
+} y
+# <- punctuation.section.action.end.pegen
+# ^ entity.name.function.pegen

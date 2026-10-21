@@ -17,6 +17,9 @@
         "vscode:prepublish": "npm run compile",
         "compile": "tsc -p .",
         "watch": "tsc -watch -p .",
+        "pretest": "npm run compile",
+        "test": "vscode-test",
+        "test:grammar": "vscode-tmgrammar-test \"test/grammar/**/*.gram\"",
         "package": "vsce package"
     },
     "categories": [
@@ -36,9 +39,13 @@
         }]
     },
     "devDependencies": {
+        "@types/mocha": "^10.0.10",
         "@types/node": "^16.18.126",
         "@types/vscode": "~1.74.0",
+        "@vscode/test-cli": "^0.0.15",
+        "@vscode/test-electron": "^3.1.0",
         "@vscode/vsce": "^4.0.0",
-        "typescript": "^7.0.2"
+        "typescript": "^7.0.2",
+        "vscode-tmgrammar-test": "^0.1.3"
     }
 }

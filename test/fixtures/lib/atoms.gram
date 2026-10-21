@@ -1,0 +1,3 @@
+atom[expr_ty]:
+    | NAME
+    | '(' a=expression ')' { a }

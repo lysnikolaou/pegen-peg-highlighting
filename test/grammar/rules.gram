@@ -1,0 +1,29 @@
+# SYNTAX TEST "source.gram" "rule definitions"
+
+start: statements ENDMARKER
+# <----- entity.name.class.pegen
+#    ^ punctuation.separator.rule.pegen
+#      ^^^^^^^^^^ entity.name.function.pegen
+#                 ^^^^^^^^^ constant.other.token.pegen
+
+statements[asdl_stmt_seq*]: statement+
+#         ^ punctuation.definition.annotation.begin.pegen
+#          ^^^^^^^^^^^^^ storage.type.pegen
+#                       ^ storage.modifier.pointer.pegen
+#                        ^ punctuation.definition.annotation.end.pegen
+#                         ^ punctuation.separator.rule.pegen
+
+names[frozenset[str]]: NAME
+#     ^^^^^^^^^ storage.type.pegen
+#               ^^^ storage.type.pegen
+#                  ^^ meta.annotation.type.pegen
+#                    ^ punctuation.separator.rule.pegen
+#                      ^^^^ constant.other.token.pegen
+
+statement[stmt_ty] (memo, left_rec):
+#                  ^ punctuation.definition.flags.begin.pegen
+#                   ^^^^ storage.modifier.flag.pegen
+#                       ^ punctuation.separator.comma.pegen
+#                         ^^^^^^^^ storage.modifier.flag.pegen
+#                                 ^ punctuation.definition.flags.end.pegen
+#                                  ^ punctuation.separator.rule.pegen

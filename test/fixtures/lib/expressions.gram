@@ -1,0 +1,9 @@
+@include "atoms.gram"
+
+assignment[stmt_ty]:
+    | a=NAME '=' b=expression { _PyAST_Assign(a, b, "expression") }
+expression[expr_ty]:
+    | atom '+' expression
+    | atom
+invalid_statement:
+    | a=expression ':=' expression { RAISE_SYNTAX_ERROR("bad expression") }

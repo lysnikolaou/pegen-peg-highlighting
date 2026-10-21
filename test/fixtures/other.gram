@@ -1,0 +1,6 @@
+# A separate grammar that also defines `start` and `statement`. It must not be
+# mixed up with main.gram.
+@include "does_not_exist.gram"
+
+start: statement* ENDMARKER
+statement: NAME NEWLINE

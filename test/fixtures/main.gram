@@ -1,0 +1,14 @@
+# A grammar split over several files. `statement` and `expression` are
+# mentioned here in a comment and must not count as references.
+@subheader """
+static int statement(void) { return 0; }
+"""
+@include "lib/expressions.gram"
+
+start[mod_ty]: a=statements ENDMARKER { _PyAST_Module(a, p->arena) }
+statements[asdl_stmt_seq*]: a=statement+ { a }
+statement[stmt_ty] (memo):
+    | assignment
+    | e=expression NEWLINE { _PyAST_Expr(e, EXTRA) }
+    | invalid_statement
+    | atom ';'

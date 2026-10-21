@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Test (VS Code ${{ matrix.vscode-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # The oldest version allowed by `engines` in package.json, and the latest release
+        vscode-version: [1.74.0, stable]
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      # VS Code needs a display, even when running tests
+      - run: xvfb-run -a npm test
+        env:
+          VSCODE_VERSION: ${{ matrix.vscode-version }}
+
+  grammar:
+    name: Syntax highlighting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run test:grammar

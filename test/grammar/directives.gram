@@ -1,0 +1,15 @@
+# SYNTAX TEST "source.gram" "meta directives and comments"
+
+@include "lib/invalid.gram"
+# <- punctuation.definition.directive.pegen
+#^^^^^^^ keyword.other.directive.pegen
+#        ^^^^^^^^^^^^^^^^^^ string.quoted.double.pegen
+@subheader """
+static int statement(void);
+# <------ string.quoted.triple.pegen
+"""
+@trailer '''
+x
+'''
+@class Parser
+#      ^^^^^^ variable.other.directive-value.pegen
