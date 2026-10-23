@@ -6,6 +6,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.4.0]
+
 - Cmd/Ctrl+Click on the path in an `@include` directive opens the included file
 - Go to Definition (Cmd/Ctrl+Click) and Find All References for rules, including rules
   defined in `@include`d files
