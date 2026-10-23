@@ -9,6 +9,7 @@
     },
     "license": "MIT",
     "publisher": "lysnikolaou",
+    "icon": "images/pegen-icon-256.png",
     "engines": {
         "vscode": "^1.74.0"
     },
