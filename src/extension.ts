@@ -9,7 +9,7 @@ class IncludeLinkProvider implements vscode.DocumentLinkProvider {
     }
 }
 
-class RuleProvider implements vscode.DefinitionProvider, vscode.ReferenceProvider {
+class RuleProvider implements vscode.DefinitionProvider, vscode.ReferenceProvider, vscode.DocumentSymbolProvider {
     constructor(private readonly index: GrammarIndex) {}
 
     async provideDefinition(
@@ -25,6 +25,12 @@ class RuleProvider implements vscode.DefinitionProvider, vscode.ReferenceProvide
         context: vscode.ReferenceContext
     ): Promise<vscode.Location[]> {
         return this.findNames(document, position, (n) => context.includeDeclaration || !n.isDefinition);
+    }
+
+    async provideDocumentSymbols(
+        document: vscode.TextDocument,
+    ): Promise<vscode.SymbolInformation[] | vscode.DocumentSymbol[]> {
+        return this.findSymbols(document);
     }
 
     private async findNames(
@@ -50,6 +56,25 @@ class RuleProvider implements vscode.DefinitionProvider, vscode.ReferenceProvide
         }
         return locations;
     }
+
+    private async findSymbols(
+        document: vscode.TextDocument,
+    ): Promise<vscode.SymbolInformation[]> {
+        await this.index.ready;
+        if (!this.index.get(document.uri)) {
+            await this.index.updateDocument(document);
+        }
+        const symbols: vscode.SymbolInformation[] = [];
+        for (const n of this.index.get(document.uri)?.names ?? []) {
+            if (n.isDefinition) {
+                symbols.push(new vscode.SymbolInformation(
+                    n.name, vscode.SymbolKind.Class, "",
+                    new vscode.Location(document.uri, n.range),
+                ));
+            }
+        }
+        return symbols;
+    }
 }
 
 export function activate(context: vscode.ExtensionContext): void {
@@ -59,7 +84,8 @@ export function activate(context: vscode.ExtensionContext): void {
     context.subscriptions.push(
         vscode.languages.registerDocumentLinkProvider(selector, new IncludeLinkProvider()),
         vscode.languages.registerDefinitionProvider(selector, ruleProvider),
-        vscode.languages.registerReferenceProvider(selector, ruleProvider)
+        vscode.languages.registerReferenceProvider(selector, ruleProvider),
+        vscode.languages.registerDocumentSymbolProvider(selector, ruleProvider),
     );
 
     const updateFromDisk = (uri: vscode.Uri) => void index.updateFromDisk(uri);

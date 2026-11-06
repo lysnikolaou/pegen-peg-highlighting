@@ -6,6 +6,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+- Outline and Go to Symbol in editor (Shift+Cmd/Ctrl+O) for rules
+
 ## [0.4.0]
 
 - Cmd/Ctrl+Click on the path in an `@include` directive opens the included file
@@ -31,4 +33,3 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [0.1.0]
 
 - Initial release
-
