@@ -1,6 +1,13 @@
 import * as assert from 'node:assert/strict';
 import * as vscode from 'vscode';
 
+interface SymbolInfo {
+    name: string;
+    containerName: string;
+    kind: vscode.SymbolKind;
+    location: string;
+}
+
 const fixtures = vscode.workspace.workspaceFolders![0]!.uri;
 const tmp = vscode.Uri.joinPath(fixtures, 'tmp');
 
@@ -23,12 +30,27 @@ function at(document: vscode.TextDocument, line: string, word: string): vscode.P
     assert.fail(`no line contains "${line}"`);
 }
 
+function locationToString(location: vscode.Location): string {
+    const start = location.range.start;
+    return `${vscode.workspace.asRelativePath(location.uri, false)}:${start.line + 1}:${start.character + 1}`;
+}
+
 function show(locations: vscode.Location[]): string[] {
     return locations
-        .map(({ uri, range: { start } }) => {
-            return `${vscode.workspace.asRelativePath(uri, false)}:${start.line + 1}:${start.character + 1}`;
-        })
+        .map((location) => locationToString(location))
         .sort();
+}
+
+function listSymbols(symbols: vscode.SymbolInformation[]): SymbolInfo[] {
+    return symbols
+        .map(({ name, containerName, kind, location }) => {
+            return {
+                "name": name,
+                "containerName": containerName,
+                "kind": kind,
+                "location": locationToString(location),
+            };
+        });
 }
 
 async function definitions(document: vscode.TextDocument, position: vscode.Position): Promise<string[]> {
@@ -37,6 +59,10 @@ async function definitions(document: vscode.TextDocument, position: vscode.Posit
 
 async function references(document: vscode.TextDocument, position: vscode.Position): Promise<string[]> {
     return show(await vscode.commands.executeCommand<vscode.Location[]>('vscode.executeReferenceProvider', document.uri, position));
+}
+
+async function documentSymbols(document: vscode.TextDocument): Promise<SymbolInfo[]> {
+    return listSymbols(await vscode.commands.executeCommand<vscode.SymbolInformation[]>('vscode.executeDocumentSymbolProvider', document.uri));
 }
 
 // File watcher and document change events arrive asynchronously, so retry
@@ -151,6 +177,32 @@ suite('Find All References', () => {
         assert.deepEqual(await references(other, at(other, 'statement:', 'statement')), [
             'other.gram:5:8',
             'other.gram:6:1',
+        ]);
+    });
+});
+
+suite('Document Symbols', () => {
+    test('finds all document symbols in file', async () => {
+        const main = await open('main.gram');
+        assert.deepEqual(await documentSymbols(main), [
+            {
+                "name": "start",
+                "containerName": "",
+                "kind": vscode.SymbolKind.Class,
+                "location": "main.gram:8:1",
+            },
+            {
+                "name": "statements",
+                "containerName": "",
+                "kind": vscode.SymbolKind.Class,
+                "location": "main.gram:9:1",
+            },
+            {
+                "name": "statement",
+                "containerName": "",
+                "kind": vscode.SymbolKind.Class,
+                "location": "main.gram:10:1",
+            }
         ]);
     });
 });
